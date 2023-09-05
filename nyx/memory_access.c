@@ -118,7 +118,7 @@ static uint64_t get_paging_phys_addr_snapshot(CPUState *cpu, uint64_t cr3, uint6
     case mm_32_protected:
         return addr & 0xFFFFFFFFULL;
     case mm_32_paging:
-        nyx_abort("mem_mode: mm_32_paging not implemented!\n");
+        return get_32_paging_phys_addr(cr3, addr, true, cpu);
     case mm_32_pae:
         nyx_abort("mem_mode: mm_32_pae not implemented!\n");
     case mm_64_l4_paging:
