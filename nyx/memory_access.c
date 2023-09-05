@@ -906,10 +906,9 @@ static uint64_t get_32_paging_phys_addr(uint64_t cr3,
 
     // a PDE references a 4Mbyte page if CR4.PSE and the PED's page size bit are set
     if (bit(cr4, 4) && bit(pde_entry, 7)) {
-        uint64_t page_address = ((bits(pde_entry, 13, 20) << 32) + ((bits(pde_entry, 22, 31) << 22));
-        uint64_t page_offset  = bits(addr, 0, 21);
-        return page_address + page_offset;
-
+        uint64_t huge_page_address = (bits(pde_entry, 13, 20) << 32) + (bits(pde_entry, 22, 31) << 22);
+        uint64_t huge_page_offset = bits(addr, 0, 21);
+        return huge_page_address + huge_page_offset;
     }
 
     uint64_t pte_address = bits(pde_entry, 12, 31) << 12;
