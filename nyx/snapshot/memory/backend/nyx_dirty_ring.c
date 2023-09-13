@@ -209,13 +209,14 @@ nyx_dirty_ring_t *nyx_dirty_ring_init(shadow_memory_t *shadow_memory)
         }
 
         self->kvm_region_slots[i].enabled = (mem->flags & KVM_MEM_READONLY) == 0;
-        self->kvm_region_slots[i].bitmap  = malloc(BITMAP_SIZE(mem->memory_size));
+        self->kvm_region_slots[i].bitmap_size = BITMAP_SIZE(mem->memory_size) + 7;
+        self->kvm_region_slots[i].bitmap =
+            malloc(self->kvm_region_slots[i].bitmap_size);
         self->kvm_region_slots[i].stack = malloc(DIRTY_STACK_SIZE(mem->memory_size));
 
-        memset(self->kvm_region_slots[i].bitmap, 0, BITMAP_SIZE(mem->memory_size));
+        memset(self->kvm_region_slots[i].bitmap, 0,
+               self->kvm_region_slots[i].bitmap_size);
         memset(self->kvm_region_slots[i].stack, 0, DIRTY_STACK_SIZE(mem->memory_size));
-
-        self->kvm_region_slots[i].bitmap_size = BITMAP_SIZE(mem->memory_size);
 
         self->kvm_region_slots[i].stack_ptr = 0;
 
