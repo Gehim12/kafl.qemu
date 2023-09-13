@@ -107,9 +107,9 @@ static inline void dirty_ring_collect(nyx_dirty_ring_t          *self,
                                       uint64_t                   gfn)
 {
     /* sanity check */
-    assert((slot & 0xFFFF0000) == 0);
+    assert(slot < self->kvm_region_slots_num);
 
-    slot_t *kvm_region_slot = &self->kvm_region_slots[slot & 0xFFFF];
+    slot_t *kvm_region_slot = &self->kvm_region_slots[slot];
 
     if (test_and_set_bit(gfn, (void *)kvm_region_slot->bitmap) == false) {
         kvm_region_slot->stack[kvm_region_slot->stack_ptr] = gfn;
