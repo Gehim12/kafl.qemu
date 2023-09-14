@@ -118,7 +118,7 @@ static inline void dirty_ring_collect(nyx_dirty_ring_t          *self,
     if (test_and_set_bit(gfn, (void *)kvm_region_slot->bitmap) == false) {
         if ((&kvm_region_slot->stack[kvm_region_slot->stack_ptr] -
              kvm_region_slot->stack) *
-                sizeof(uint64_t) >
+                sizeof(uint64_t) >=
             kvm_region_slot->stack_size)
         {
             return;
